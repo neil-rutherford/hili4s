@@ -1,6 +1,6 @@
 from app.admin import bp
 from app.admin.forms import RegionForm, EventForm, ShiftForm, UserForm
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, send_from_directory
 from app.models import Region, Event, Shift, User
 import datetime
 from flask_login import login_required, current_user
