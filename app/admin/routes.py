@@ -7,9 +7,9 @@ from flask_login import login_required, current_user
 import json
 from app import db
 
-@bp.route('/favicon.ico')
-def favicon():
-    return send_from_directory('static', 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+#@bp.route('/favicon.ico')
+#def favicon():
+    #return send_from_directory('static', 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @bp.route('/admin/dashboard')
 @login_required
