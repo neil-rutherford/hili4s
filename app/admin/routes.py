@@ -1,15 +1,12 @@
 from app.admin import bp
 from app.admin.forms import RegionForm, EventForm, ShiftForm, UserForm
-from flask import render_template, redirect, url_for, flash, request, send_from_directory
+from flask import render_template, redirect, url_for, flash, request
 from app.models import Region, Event, Shift, User
 import datetime
 from flask_login import login_required, current_user
 import json
 from app import db
 
-#@bp.route('/favicon.ico')
-#def favicon():
-    #return send_from_directory('static', 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @bp.route('/admin/dashboard')
 @login_required
