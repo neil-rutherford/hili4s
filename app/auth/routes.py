@@ -8,7 +8,7 @@ from werkzeug.urls import url_parse
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
-    if current_user.is_authenticated:
+    if current_user.is_authenticaed:
         return redirect(url_for('main.dashboard'))
     regions = Region.query.all()
     region_list = [(i.id, i.name) for i in regions]
