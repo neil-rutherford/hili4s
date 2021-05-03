@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="text-center">
+        <h1>{{ region.name }} - Upcoming Events</h1>
+        <a href="{{ url_for('admin.create_event') }}"><button class="btn btn-success"><b>+ New Event</b></button></a>
+        <a href="{{ url_for('admin.edit_region', region_id=region.id) }}"><button class="btn btn-outline-primary"><b>Edit Region</b></button></a>
+        <a href="{{ url_for('admin.delete_region', region_id=region.id) }}"><button class="btn btn-outline-danger"><b>Delete Region</b></button></a> 
+    </div>
+    <hr>
+    <div class="col-sm-8 offset-sm-2 text-center">
+        {% for event in events %}
+            <div class="card">
+                <div class="card-header">
+                    <h4>{{ event.name }}</h4>
+                    <h5 class="text-muted">{{ event.shift_start.strftime("%B %d, %Y (%I:%M %p") }} - {{ event.shift_end.strftime("%I:%M %p)") }}</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% if event.skilled_shift_count() / event.skilled_capacity >= 0.75 %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"><b>Skilled Confirmed:</b> <span class="badge bg-success">{{ event.skilled_shift_count() }} / {{ event.skilled_capacity }}</span></li>
+                        {% elif event.skilled_shift_count() / event.skilled_capacity >= 0.5 %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"><b>Skilled Confirmed:</b> <span class="badge bg-info">{{ event.skilled_shift_count() }} / {{ event.skilled_capacity }}</span></li>
+                        {% elif event.skilled_shift_count() / event.skilled_capacity >= 0.25 %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"><b>Skilled Confirmed:</b> <span class="badge bg-warning">{{ event.skilled_shift_count() }} / {{ event.skilled_capacity }}</span></li>
+                        {% else %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"><b>Skilled Confirmed:</b> <span class="badge bg-danger">{{ event.skilled_shift_count() }} / {{ event.skilled_capacity }}</span></li>
+                        {% endif %}
+                        {% if event.unskilled_shift_count() / event.unskilled_capacity >= 0.75 %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"><b>Unskilled Confirmed:</b> <span class="badge bg-success">{{ event.unskilled_shift_count() }} / {{ event.unskilled_capacity }}</span></li>
+                        {% elif event.unskilled_shift_count() / event.unskilled_capacity >= 0.5 %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"><b>Unskilled Confirmed:</b> <span class="badge bg-info">{{ event.unskilled_shift_count() }} / {{ event.unskilled_capacity }}</span></li>
+                        {% elif event.unskilled_shift_count() / event.unskilled_capacity >= 0.25 %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"><b>Unskilled Confirmed:</b> <span class="badge bg-warning">{{ event.unskilled_shift_count() }} / {{ event.unskilled_capacity }}</span></li>
+                        {% else %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"><b>Unskilled Confirmed:</b> <span class="badge bg-danger">{{ event.unskilled_shift_count() }} / {{ event.unskilled_capacity }}</span></li>
+                        {% endif %}
+                        {% if event.skilled_waitlist_count() > 0 %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"><b>Skilled Waitlist:</b> <span class="badge bg-success">{{ event.skilled_waitlist_count() }}</span></li>
+                        {% endif %}
+                        {% if event.unskilled_waitlist_count() > 0 %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"><b>Unskilled Waitlist:</b> <span class="badge bg-success">{{ event.unskilled_waitlist_count() }}</span></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <a href="{{ url_for('admin.view_event', event_id=event.id) }}" class="stretched-link"></a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

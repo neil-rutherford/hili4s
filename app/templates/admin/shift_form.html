@@ -1,0 +1,102 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1 class="display-4 text-center">{{ title }}</h1>
+    <hr>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <!--- User Information --->
+        <div class="text-center bg-light text-dark rounded">
+        <br>
+        <div class="form-group">
+            {{ form.user_id.label }}<br/>
+            {{ form.user_id(_class="form-control") }}
+            {% for error in form.user_id.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">What worker worked the shift?</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.event_id.label }}<br/>
+            {{ form.event_id(_class="form-control") }}
+            {% for error in form.event_id.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">What was the name of the event?</small>
+        </div>
+        <br>
+        {{ form.is_waitlist }} {{ form.is_waitlist.label }}
+        </div>
+        <br>
+        <!--- Clock-In Information --->
+        <div class="text-center bg-light text-dark rounded">
+        <div class="form-group">
+            {{ form.shift_start.label }}<br/>
+            {{ form.shift_start(_class="form-control") }}
+            {% for error in form.shift_start.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">When did the worker clock in for the day, in HH:SS format? (e.g. "07:00")</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.lunch_start.label }}<br/>
+            {{ form.lunch_start(_class="form-control") }}
+            {% for error in form.lunch_start.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">When did the worker clock out for lunch, in HH:SS format? (e.g. "12:30")</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.lunch_end.label }}<br/>
+            {{ form.lunch_end(_class="form-control") }}
+            {% for error in form.lunch_end.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">When did the worker end their lunch break, in HH:SS format? (e.g. "13:00")</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.shift_end.label }}<br/>
+            {{ form.shift_end(_class="form-control") }}
+            {% for error in form.shift_end.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">When did the worker clock out for the day, in HH:SS format? (e.g. "17:00")</small>
+        </div>
+        <br>
+        {{ form.is_cancel }} {{ form.is_cancel.label }}<br/>
+        <small class="form-text text-muted">Did the worker cancel their shift?</small><br>
+        {{ form.is_noshow }} {{ form.is_noshow.label }}<br/>
+        <small class="form-text text-muted">Did the worker not show up for their shift?</small><br>
+        </div>
+        <br>
+        <!--- Special Pay --->
+        <div class="text-center bg-light text-dark rounded">
+        <div class="form-group">
+            {{ form.special_units.label }}<br/>
+            {{ form.special_units(_class="form-control") }}
+            {% for error in form.special_units.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">If the worker qualifies for special base pay, put 1 here to convert their pay from "normal base" to "special base".</small><br/>
+            <small class="form-text text-muted">If the worker needs to be reimbursed for units (such as mileage), put those units here so they get "special base + (special unit)" pay.</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.special_explanation.label }}<br/>
+            {{ form.special_explanation(_class="form-control") }}
+            {% for error in form.special_explanation.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">Explain why the worker is applying for special pay. (e.g. "I traveled from Denver to Pueblo." or "I was a lane lead.")</small>
+        </div>
+        </div>
+        <br>
+        <div class="text-center">
+            {{ form.submit() }}
+        </div>
+    </form>
+{% endblock %}

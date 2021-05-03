@@ -1,0 +1,175 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1 class="display-4 text-center">{{ title }}</h1>
+    <hr>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <!--- Event Information --->
+        <div class="text-center bg-light text-dark rounded">
+        <h2>Event Information</h2>
+        
+        <div class="form-group">
+            {{ form.name.label }}<br/>
+            {{ form.name(_class="form-control") }}
+            {% for error in form.name.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">Name your event something descriptive and unique. (e.g. "4/25 - Dick's Sporting Goods Park")</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.shift_start.label }}<br/>
+            {{ form.shift_start(_class="form-control") }}
+            {% for error in form.shift_start.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">When does the event start, in local time? Use the following format: YYYY-MM-DD HH:MM (e.g. "2021-04-27 13:45").</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.shift_end.label }}<br/>
+            {{ form.shift_end(_class="form-control") }}
+            {% for error in form.shift_end.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">When does the event end, in local time? Use the following format: YYYY-MM-DD HH:SS (e.g. "2021-12-25 21:12").</small>
+        </div>
+        </div>
+        <br>
+        <!--- Location Information --->
+        <div class="text-center bg-light text-dark rounded">
+        <h2>Location Information</h2>
+        <div class="form-group">
+            {{ form.region_id.label }}<br/>
+            {{ form.region_id(_class="form-control") }}
+            {% for error in form.region_id.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">This event will be shown to workers in this region.</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.street_address.label }}<br/>
+            {{ form.street_address(_class="form-control") }}
+            {% for error in form.street_address.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">What is the event's street address? (e.g. "6000 Victory Way")</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.city.label }}<br/>
+            {{ form.city(_class="form-control") }}
+            {% for error in form.city.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">What city is the event in? (e.g. "Commerce City")</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.state.label }}<br/>
+            {{ form.state(_class="form-control") }}
+            {% for error in form.state.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">What state is the event in, as a two-letter abbreviation? (e.g. "CO")</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.zip_code.label }}<br/>
+            {{ form.zip_code(_class="form-control") }}
+            {% for error in form.zip_code.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">What is the event's ZIP code? (e.g. "80022")</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.advance_url.label }}<br/>
+            {{ form.advance_url(_class="form-control") }}
+            {% for error in form.advance_url.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">Provide a link to the Google Doc.</small>
+        </div>
+        </div>
+        <br>
+        <!--- Staffing Requirements --->
+        <div class="text-center bg-light text-dark rounded">
+        <h2>Staffing Requirements</h2>
+        <div class="form-group">
+            {{ form.skilled_capacity.label }}<br/>
+            {{ form.skilled_capacity(_class="form-control") }}
+            {% for error in form.skilled_capacity.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">How many skilled workers are you looking to find for this event?</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.unskilled_capacity.label }}<br/>
+            {{ form.unskilled_capacity(_class="form-control") }}
+            {% for error in form.unskilled_capacity.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">How many unskilled workers are you looking to find for this event?</small>
+        </div>
+        </div>
+        <br>
+        <!--- Pay Rate --->
+        <div class="text-center bg-light text-dark rounded">
+        <h2>Pay Rates</h2>
+        <div class="form-group">
+            {{ form.skilled_base.label }}<br/>
+            ${{ form.skilled_base(_class="form-control") }}
+            {% for error in form.skilled_base.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">What is the daily pay for a skilled worker, in USD? (Skilled workers include credentialled medical professionals.)</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.unskilled_base.label }}<br/>
+            ${{ form.unskilled_base(_class="form-control") }}
+            {% for error in form.unskilled_base.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">What is the daily pay for an unskilled (admin) worker, in USD? (Unskilled workers include uncredentialled admins.)</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.special_base.label }}<br/>
+            ${{ form.special_base(_class="form-control") }}
+            {% for error in form.special_base.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">What is the daily pay for a special worker, in USD? (Special workers may include leaders or out-of-region workers.)</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.special_rate.label }}<br/>
+            ${{ form.special_rate(_class="form-control") }} / unit
+            {% for error in form.special_rate.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">What is the per-unit rate for special workers, in USD? (e.g. $0.50 per mile for out-of-region workers.)</small>
+        </div>
+        </div>
+        <br>
+        <!--- Special Requirements --->
+        <div class="text-center bg-light text-dark rounded">
+        <h2>Special Requirements</h2>
+        <div class="form-check form-switch">
+            {{ form.need_drug(_class="form-check-input") }}
+            {{ form.need_drug.label }}<br>
+        </div>
+        <div class="form-check form-switch">
+            {{ form.need_background(_class="form-check-input") }}
+            {{ form.need_background.label }}<br>
+        </div>
+        </div>
+        <br>
+        <div class="text-center">{{ form.submit() }}</div>
+    </form>
+{% endblock %}

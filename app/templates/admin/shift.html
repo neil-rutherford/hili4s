@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-body text-center">
+            <h4><a href="{{ url_for('admin.view_event', event_id=shift.event_id) }}"><b>{{ shift.location.name }}</b></a></h4>
+            <h5><a href="{{ url_for('admin.view_user', user_id=shift.user_id) }}"><b>{{ shift.worker.first_name }} {{ shift.worker.email }}</b></a></h5>
+            {% if shift.is_cancel %}
+                <h4><span class="badge bg-danger">Cancelled</span></h4>
+            {% endif %}
+            {% if shift.is_noshow %}
+                <h4><span class="badge bg-danger">No Show</span></h4>
+            {% endif %}
+            {% if shift.is_waitlist %}
+                <h4><span class="badge bg-warning">Waitlist</span></h4>
+            {% endif %}
+                                
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header text-center">
+                    <b>Event Information</b>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"><b>Event Name:</b> <span class="text-muted">{{ shift.location.name }}</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"><b>Address:</b> <span class="text-muted">{{ shift.location.street_address }}, {{ shift.location.city }}, {{ shift.location.state }} {{ shift.location.zip_code }}</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"><b>Date:</b> <span class="text-muted">{{ shift.location.shift_start.strftime('%B %d, %Y') }}</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"><b>Hours:</b> <span class="text-muted">{{ shift.location.shift_start.strftime('%I:%M %p') }} - {{ shift.location.shift_end.strftime('%I:%M %p') }}</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"><a href="{{ shift.location.advance_url }}"><b>Advance URL</b></a></li>
+                    </ul>
+                    <div class="text-center">
+                    <a href="{{ url_for('admin.view_event', event_id=shift.event_id) }}"><button class="btn btn-primary"><b>More event information</b></button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header text-center">
+                    <b>Shift Information</b>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"><b>Work Day Clock-In:</b> <span class="text-muted">{{ shift.shift_start }}</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"><b>Lunch Clock-Out:</b> <span class="text-muted">{{ shift.lunch_start }}</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"><b>Lunch Clock-In:</b> <span class="text-muted">{{ shift.lunch_end }}</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"><b>Work Day Clock-Out:</b> <span class="text-muted">{{ shift.shift_end }}</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"><b>Special Units:</b> <span class="text-muted">{{ shift.special_units }}</span></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"><b>Special Explanation:</b> <span class="text-muted">{{ shift.special_explanation }}</span></li>
+                    </ul>
+                    <div class="text-center">
+                    <a href="{{ url_for('admin.edit_shift', shift_id=shift.id) }}"><button class="btn btn-primary"><b>Edit Shift</b></button></a>
+                    <a href="{{ url_for('admin.delete_shift', shift_id=shift.id) }}"><button class="btn btn-danger"><b>Delete Shift</b></button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

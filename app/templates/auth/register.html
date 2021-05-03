@@ -1,0 +1,100 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1 class="display-4 text-center">Register</h1>
+    <hr>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <!--- Personal Information --->
+        <div class="text-center bg-light text-dark rounded">
+        <br>
+        <div class="form-group">
+            {{ form.first_name.label }}<br/>
+            {{ form.first_name(_class="form-control") }}
+            {% for error in form.first_name.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.last_name.label }}<br/>
+            {{ form.last_name(_class="form-control") }}
+            {% for error in form.last_name.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.email.label }}<br/>
+            {{ form.email(_class="form-control") }}
+            {% for error in form.email.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">This will be used for logging in and for contact.</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.password.label }}<br/>
+            {{ form.password(_class="form-control") }}
+            {% for error in form.password.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">Strong passwords are at least 8 characters long, and have numbers, capitalized letters, lowercase letters, and symbols.</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.verify_password.label }}<br/>
+            {{ form.verify_password(_class="form-control") }}
+            {% for error in form.verify_password.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        <br>
+        </div>
+        <br>
+        <!--- Administrative Information --->
+        <div class="text-center bg-light text-dark rounded">
+        <div class="form-group">
+            {{ form.region_id.label }}<br/>
+            {{ form.region_id(_class="form-control") }}
+            {% for error in form.region_id.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">Which region would you like to work in?</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.user_type.label }}<br/>
+            {{ form.user_type(_class="form-control") }}
+            {% for error in form.user_type.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">What user type best describes you? ("Skilled" generally means "credentialled medical", whereas "unskilled" means "uncredentialled admin.")</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.stripe_customer_id.label }}<br/>
+            {{ form.stripe_customer_id(_class="form-control") }}
+            {% for error in form.stripe_customer_id.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">In future releases, this will be used for payouts. Don't worry about this for now.</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.comments.label }}<br/>
+            {{ form.comments(_class="form-control") }}
+            {% for error in form.comments.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">Optional information to share with staffing coordinators. (e.g. "I have lane lead experience." or "Montbello is five minutes from my house.")
+            
+        </div>
+        <br>
+        </div>
+        <br>
+        <div class="text-center">
+        {{ form.submit() }}
+        </div>
+    </form>
+{% endblock %}

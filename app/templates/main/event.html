@@ -1,0 +1,141 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-body text-center">
+            <h4>{{ event.name }}</h4>
+            <h6 class="text-muted">{{ event.shift_start.strftime('%B %d, %Y (%I:%M %p') }} - {{ event.shift_end.strftime('%I:%M %p)') }}</h6>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="text-center">Event Information</h6>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0">Region</h6>
+                            <small class="text-secondary">{{ region.name }}</small>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0">Address</h6>
+                            <small class="text-secondary">{{ event.street_address }}, {{ event.city }}, {{ event.state }} {{ event.zip_code }}</small>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0">Advance URL</h6>
+                            <small class="text-secondary"><a href="{{ event.advance_url }}">Link</a></small>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0">Base Pay</h6>
+                            {% if current_user.user_type == 2 %}
+                                <small class="text-secondary">{{ "$%.2f"|format(event.skilled_base) }}</small>
+                            {% elif current_user.user_type == 3 %}
+                                <small class="text-secondary">{{ "$%.2f"|format(event.unskilled_base) }}</small>
+                            {% else %}
+                                <small class="text-secondary">Talk to your staffing coordinator.</small>
+                            {% endif %}
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0">Special Pay*</h6>
+                            <small class="text-secondary">{{ "$%.2f"|format(event.special_base) }}</small>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0">Special Per-Unit Rate*</h6>
+                            <small class="text-secondary">{{ "$%.2f"|format(event.special_rate) }} / unit</small>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0">Drug Screen Required?</h6>
+                            {% if current_user.is_drug and event.need_drug %}
+                                <small class="text-secondary"><span class="badge bg-success">True</span></small>
+                            {% elif not current_user.is_drug and event.need_drug %}
+                                <small class="text-secondary"><span class="badge bg-danger">True</span></small>
+                            {% elif not current_user.is_drug and not event.need_drug %}
+                                <small class="text-secondary"><span class="badge bg-success">False</span></small>
+                            {% else %}
+                                <small class="text-secondary"><span class="badge bg-success">False</span></small>
+                            {% endif %}
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0">Background Check Required?</h6>
+                            {% if current_user.is_background and event.need_background %}
+                                <small class="text-secondary"><span class="badge bg-success">True</span></small>
+                            {% elif not current_user.is_background and event.need_background %}
+                                <small class="text-secondary"><span class="badge bg-danger">True</span></small>
+                            {% elif not current_user.is_background and not event.need_background %}
+                                <small class="text-secondary"><span class="badge bg-success">False</span></small>
+                            {% else %}
+                                <small class="text-secondary"><span class="badge bg-success">False</span></small>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+           
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="text-center">Staffing Information</h6>
+                    <div class="card">
+                    {% if shift %}
+                        {% if shift.is_waitlist %}
+                            <div class="card-body text-center bg-warning">
+                                You are waitlisted for a shift at this event.<br>
+                                <a href="{{ url_for('main.view_shift', shift_id=shift.id) }}"><button class="btn btn-primary"><b>More Information</b></button></a>
+                                <a href="{{ url_for('main.cancel_shift', shift_id=shift.id) }}"><button class="btn btn-danger"><b>Cancel Shift</b></button></a>
+                                </div>
+                            {% elif shift.is_cancel %}
+                                <div class="card-body text-center bg-danger text-white">
+                                    You canceled your shift at this location.
+                                </div>
+                            {% elif shift.is_noshow %}
+                                <div class="card-body text-center bg-danger text-white">
+                                    You didn't show up for your shift at this location.
+                                </div>
+                            {% else %}
+                                <div class="card-body text-center bg-success text-white">
+                                    You are confirmed for a shift at this event.<br>
+                                    <a href="{{ url_for('main.view_shift', shift_id=shift.id) }}"><button class="btn btn-primary"><b>See Shift Details</b></button></a>
+                                    <a href="{{ url_for('main.cancel_shift', shift_id=shift.id) }}"><button class="btn btn-danger"><b>Cancel Shift</b></button></a>
+                                </div>
+                            {% endif %}
+                        {% else  %}
+                            {% if current_user.user_type == 2 %}
+                                {% if event.skilled_capacity - event.skilled_shift_count() > 0 %}
+                                    <div class="card-body text-center">
+                                        <p>There are currently <h3>{{ event.skilled_capacity - event.skilled_shift_count() }}</h3> spots open at this location.</p>
+                                        <a href="{{ url_for('main.create_shift', event_id=event.id) }}"><button class="btn btn-success"><b>Sign Up For Shift</b></button></a>
+                                    </div>
+                                {% else %}
+                                    <div class="card-body text-center">
+                                        <p>There are currently <h3>0</h3> spots open at this location.</p>
+                                        <a href="{{ url_for('main.create_shift', event_id=event.id) }}"><button class="btn btn-warning"><b>Sign Up For Waitlist</b></button></a>
+                                    </div>
+                                {% endif %}
+                            {% elif current_user.user_type == 3 %}
+                                {% if event.unskilled_capacity - event.unskilled_shift_count() > 0 %}
+                                    <div class="card-body text-center">
+                                        <p>There are currently <h3>{{ event.unskilled_capacity - event.unskilled_shift_count() }}</h3> spots open at this location.</p>
+                                        <a href="{{ url_for('main.create_shift', event_id=event.id) }}"><button class="btn btn-success"><b>Sign Up For Shift</b></button></a>
+                                    </div>
+                                {% else %}
+                                    <div class="card-body text-center">
+                                        <p>There are currently <h3>0</h3> spots open at this location.</p>
+                                        <a href="{{ url_for('main.create_shift', event_id=event.id) }}"><button class="btn btn-warning"><b>Sign Up For Waitlist</b></button></a>
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                <div class="card-body text-center">
+                                    <p>Please contact your staffing coordinator to schedule a shift.</p>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <small class="text-muted">* - Special rates only apply in certain circumstances. Talk to your staffing coordinator for more information.</small>
+        </div>
+{% endblock %}

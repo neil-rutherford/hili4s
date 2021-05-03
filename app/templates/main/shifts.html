@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1 class="display-4 text-center">{{ title }}</h1>
+        <hr>
+        <div class="col-sm-8 offset-sm-2">
+        {% for shift in shifts %}
+            <div class="card">
+                <div class="card-body bg-light text-center">
+                    <h5>{{ shift.location.name }}</h5>
+                    <h6 class="text-secondary">{{ shift.location.shift_start.strftime("%B %d, %Y (%I:%M %p") }} - {{ shift.location.shift_end.strftime("%I:%M %p)") }}</h6>
+                    {% if shift.is_cancel %}
+                        <span class="badge bg-danger">Canceled</span>
+                    {% elif shift.is_noshow %}
+                        <span class="badge bg-danger">No Show</span>
+                    {% elif shift.is_waitlist %}
+                        <span class="badge bg-warning">Waitlist</span>
+                    {% else %}
+                        <span class="badge bg-success">Confirmed</span>
+                    {% endif %}
+                    <a href="{{ url_for('main.view_shift', shift_id=shift.id) }}" class="stretched-link"></a>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+{% endblock %}

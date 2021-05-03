@@ -1,0 +1,127 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="row gutters-sm">
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex flex-column align-items-center text-center">
+                    
+                        <div class="mt-3">
+                            <h4>{{ user.first_name }} {{ user.last_name }}</h4>
+                            <h5><a href="mailto:{{ user.email }}">{{ user.email }}</a></h5>
+                            <br>
+                            <p>{{ user.comments }}</p>
+                            
+                            <a href="{{ url_for('admin.edit_user', user_id=user.id) }}"><button class="btn btn-primary"><b>Edit User</b></button></a>
+                            <a href="{{ url_for('admin.delete_user', user_id=user.id) }}"><button class="btn btn-danger"><b>Delete User</b></button></a>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-3">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0">Region</h6>
+                    <a href="{{ url_for('admin.view_region', region_id=region.id) }}" class="text-muted" style="text-decoration: none;"><span class="text-secondary">{{ region.name }}</span></a>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0">User Type</h6>
+                    {% if user.user_type == 1 %}
+                        <span class="text-secondary">Website Administrator</span>
+                    {% elif user.user_type == 2 %}
+                        <span class="text-secondary">Skilled Worker</span>
+                    {% elif user.user_type == 3 %}
+                        <span class="text-secondary">Unskilled Worker</span>
+                    {% else %}
+                        <span class="text-secondary">Other</span>
+                    {% endif %}
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0">Stripe Customer ID</h6>
+                    <span class="text-secondary">{{ user.stripe_customer_id }}</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0">Passed Drug Screen?</h6>
+                    <span class="text-secondary">{{ user.is_drug }}</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0">Passed Background Check?</h6>
+                    <span class="text-secondary">{{ user.is_background }}</span>
+                  </li>
+                </ul>
+              </div>
+              {% if user.is_blacklist %}
+              <div class="card mt-3 bg-danger text-center text-white">
+                <h5>User is on blacklist.</h5>
+            </div>
+            {% endif %}
+            </div>
+            
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-header text-center">
+                        Future Shifts
+                    </div>
+                    <div class="card-body" style="height: 40vh; overflow-y: scroll;">
+                    {% if not future_shifts %}
+                        <p class="text-center">No future shifts to show.</p>
+                    {% else %}
+                    {% for shift in future_shifts %}
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-8"><b>{{ shift.location.name }}</b></div>
+                                    <div class="col-sm-3">{{ shift.shift_start.strftime('%m/%d/%Y') }}</div>
+                                </div>
+                                {% if shift.is_cancel %}
+                                    <span class="badge bg-danger">CANCELED</span>
+                                {% endif %}
+                                {% if shift.is_noshow %}
+                                    <span class="badge bg-danger">NO SHOW</span>
+                                {% endif %}
+                                {% if shift.is_waitlist %}
+                                    <span class="badge bg-warning">WAITLIST</span>
+                                {% endif %}
+                                <a href="{{ url_for('admin.view_shift', shift_id=shift.id) }}" class="stretched-link"></a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% endif %}
+                    </div>
+                </div>
+
+                <br>
+                <div class="card mb-3">
+                    <div class="card-header text-center">
+                        Past Shifts
+                    </div>
+                    <div class="card-body" style="height: 40vh; overflow-y: scroll;">
+                    {% if not past_shifts %}
+                        <p class="text-center">No past shifts to show.</p>
+                    {% else %}
+                    {% for shift in past_shifts %}
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-8"><b>{{ shift.location.name }}</b></div>
+                                    <div class="col-sm-3">{{ shift.shift_start.strftime('%m/%d/%Y') }}</div>
+                                </div>
+                                {% if shift.is_cancel %}
+                                    <span class="badge bg-danger">CANCELED</span>
+                                {% endif %}
+                                {% if shift.is_noshow %}
+                                    <span class="badge bg-danger">NO SHOW</span>
+                                {% endif %}
+                                {% if shift.is_waitlist %}
+                                    <span class="badge bg-warning">WAITLIST</span>
+                                {% endif %}
+                                <a href="{{ url_for('admin.view_shift', shift_id=shift.id) }}" class="stretched-link"></a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% endif %}
+            </div>
+            </div>
+{% endblock %}

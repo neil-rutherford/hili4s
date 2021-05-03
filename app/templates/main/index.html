@@ -1,0 +1,106 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="text-center">
+      <style>
+  header {
+    position: relative;
+    background-color: black;
+    height: 50vh;
+    min-height: 25rem;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  header video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: 0;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+  }
+
+  header .container {
+    position: relative;
+    z-index: 2;
+  }
+
+  header .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    opacity: 0.5;
+    z-index: 1;
+  }
+
+  @media (pointer: coarse) and (hover: none) {
+    header {
+      background: url('https://source.unsplash.com/XT5OInaElMw/1600x900') black no-repeat center center scroll;
+    }
+    header video {
+      display: none;
+    }
+  }
+  </style>
+        <header>
+            <div class="overlay"></div>
+            <video playsinline="playsinline" autoplay="autoplay" muted="muted">
+            <source src="{{ url_for('static', filename='banner_video.mp4') }}" type="video/mp4">
+            </video>
+            <div class="container h-100">
+            <div class="d-flex h-100 text-center align-items-center">
+                <div class="w-100 text-white">
+                <h1 class="display-3">Shift Scheduling Software Solution</h1>
+                <p class="lead mb-0">A software solution for scheduling shifts.</p>
+                
+                </div>
+            </div>
+            </div>
+        </header>
+        <br>
+        <div class="row">
+        <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="text-center"><b>For Contractors</b></h5>
+                        <ul style="text-align:left;">
+                            <li><h6>Say goodbye to back-and-forth emails. Say hello to a centralized shift scheduling solution.</h6></li>
+                            <li><h6>Manage all your shifts in one spot. Keep track of old shifts, plan your schedule, and cancel if needed.</h6></li>
+                            <li><h6>"This is a game changer! Now I can spend my Friday afternoon with my friends instead of waiting for a scheduling email!" - John Doe</h6></li>
+                            <li><h6><u>Coming soon:</u> Get email reminders before your shift.</h6></li>
+                            <li><h6><u>Coming soon (maybe):</u> Save time and effort by automatically generating invoices.</h6></li>
+ 
+                        </ul>
+                        <a href="{{ url_for('auth.register') }}"><button class="btn btn-primary" style="width:50%;"><b>Register</b></button></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body bg-warning">
+                        <h5 class="text-center"><b>For Staffing Coordinators</b></h5>
+                        <ul style="text-align:left;">
+                            <li><h6>Increase productivity and improve accuracy with automated signups.</h6></li>
+                            <li><h6>Seemlessly manage signups, waitlists, and cancellations.</h6></li>
+                            <li><h6>Balance workforce among vaccination sites with dynamic and transparent forms.</h6></li>
+                            <li><h6><u>Coming soon:</u> Automated email notifications.</h6></li>
+                            <li><h6><u>Coming soon (maybe):</u> Streamline invoicing and decrease payout costs.</h6></li>
+                        </ul>
+                        <a href="{{ url_for('auth.register') }}"><button class="btn btn-primary" style="width:50%;"><b>Register</b></button></a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+{% endblock %}

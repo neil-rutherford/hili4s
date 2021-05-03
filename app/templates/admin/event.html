@@ -1,0 +1,132 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="row gutters-sm">
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex flex-column align-items-center text-center">
+                    
+                        <div class="mt-3">
+                            <h4>{{ event.name }}</h4>
+                            <h5 class="text-muted">{{ event.shift_start.strftime("%B %d, %Y (%I:%M %p") }} - {{ event.shift_end.strftime("%I:%M %p)") }}</h5>
+                            <br>
+                            <a href="{{ url_for('admin.edit_event', event_id=event.id) }}"><button class="btn btn-primary"><b>Edit Event</b></button></a>
+                            <a href="{{ url_for('admin.delete_event', event_id=event.id) }}"><button class="btn btn-danger"><b>Delete Event</b></button></a>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-3">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0">Region</h6>
+                    <a href="{{ url_for('admin.view_region', region_id=region.id) }}" class="text-muted" style="text-decoration: none;"><small class="text-secondary">{{ region.name }}</small></a>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0">Address</h6>
+                    <small class="text-secondary">{{ event.street_address }}, {{ event.city }}, {{ event.state }} {{ event.zip_code }}</small>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0">Advance URL</h6>
+                    <a href="{{ event.advance_url }}"><small class="text-secondary">Link</small></a>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0">Skilled Base</h6>
+                    <small class="text-secondary">{{ "$%.2f"|format(event.skilled_base) }}</small>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0">Unskilled Base</h6>
+                    <small class="text-secondary">{{ "$%.2f"|format(event.unskilled_base) }}</small>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0">Special Base</h6>
+                    <small class="text-secondary">{{ "$%.2f"|format(event.special_base) }}</small>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0">Special Per-Unit</h6>
+                    <small class="text-secondary">{{ "$%.2f"|format(event.special_rate) }} / unit</small>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0">Drug Screen Required?</h6>
+                    <small class="text-secondary">{{ event.need_drug }}</small>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0">Background Check Required?</h6>
+                    <small class="text-secondary">{{ event.need_background }}</small>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+            
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="card-header text-center">
+                        <b>Skilled Shifts ({{ event.skilled_shift_count() }} / {{ event.skilled_capacity }}) {% if event.skilled_waitlist_count() > 0 %}<br/> + {{ event.skilled_waitlist_count() }} Waitlist {% endif %}</b>
+                    </div>
+                    <div class="card-body" style="height: 40vh; overflow-y: scroll;">
+                    {% if not event.shifts %}
+                        <p class="text-center">No skilled shifts to show.</p>
+                    {% else %}
+                    {% for shift in event.shifts %}
+                    
+                    {% if shift.worker.user_type == 2 %}
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <h5>{{ shift.worker.first_name }} {{ shift.worker.last_name }}</h5>
+                                <h6><a href="mailto:{{ shift.worker.email }}">{{ shift.worker.email }}</a></h6>
+                                {% if shift.is_cancel %}
+                                    <span class="badge bg-danger">Canceled</span>
+                                {% endif %}
+                                {% if shift.is_noshow %}
+                                    <span class="badge bg-danger">No Show</span>
+                                {% endif %}
+                                {% if shift.is_waitlist %}
+                                    <span class="badge bg-warning">Waitlist</span>
+                                {% endif %}
+                                
+                                <a href="{{ url_for('admin.view_shift', shift_id=shift.id) }}" class="stretched-link"></a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                    </div>
+                </div>
+
+                <br>
+                <div class="card mb-3">
+                    <div class="card-header text-center">
+                        <b>Unskilled Shifts ({{ event.unskilled_shift_count() }} / {{ event.unskilled_capacity }}) {% if event.unskilled_waitlist_count() > 0 %}<br/> + {{ event.unskilled_waitlist_count() }} Waitlist {% endif %}</b>
+                    </div>
+                    <div class="card-body" style="height: 40vh; overflow-y: scroll;">
+                    {% if not event.shifts %}
+                        <p class="text-center">No unskilled shifts to show.</p>
+                    {% else %}
+                    {% for shift in event.shifts %}
+                    {% if shift.worker.user_type == 3 %}
+                        <div class="card bg-light">
+                            <div class="card-body text-center">
+                                <h5>{{ shift.worker.first_name }} {{ shift.worker.last_name }}</h5>
+                                <h6><a href="mailto:{{ shift.worker.email }}">{{ shift.worker.email }}</a></h6>
+                                {% if shift.is_cancel %}
+                                    <span class="badge bg-danger">Canceled</span>
+                                {% endif %}
+                                {% if shift.is_noshow %}
+                                    <span class="badge bg-danger">No Show</span>
+                                {% endif %}
+                                {% if shift.is_waitlist %}
+                                    <span class="badge bg-warning">Waitlist</span>
+                                {% endif %}
+                                
+                                <a href="{{ url_for('admin.view_shift', shift_id=shift.id) }}" class="stretched-link"></a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+            </div>
+            </div>
+{% endblock %}

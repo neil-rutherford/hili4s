@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1 class="display-4 text-center">{{ title }}</h1>
+    <hr>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="text-center bg-light text-dark rounded">
+        <br>
+        <div class="form-group">
+            {{ form.name.label }}<br/>
+            {{ form.name(_class="form-control") }}
+            {% for error in form.name.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">Regions are a way of sorting users and events. Make sure you name it something descriptive. (e.g. "Denver Area")</small>
+        </div>
+        </div>
+        <br>
+        <div class="text-center">
+            {{ form.submit() }}
+        </div>
+    </form>
+{% endblock %}

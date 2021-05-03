@@ -1,0 +1,117 @@
+{% extends "layout.html" %}
+
+{% block content %}
+            <div class="card">
+            <div class="card-body text-center">
+                <h4>{{ current_user.first_name }} {{ current_user.last_name }}'s Shift at {{ event.name }}</h4>
+                <h6 class="text-secondary">{{ event.shift_start.strftime("%B %d, %Y (%I:%M %p") }} - {{ event.shift_end.strftime("%I:%M %p)") }}</h6>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="text-center">Event Information</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"><b>Address:</b> <small class="text-muted">{{ event.street_address }}, {{ event.city }}, {{ event.state }} {{ event.zip_code }}</small></li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap"><b>Advance URL:</b> <small class="text-muted"><a href="{{ event.advance_url }}">Link</a></small></li>
+                        </ul>
+                        <br>
+                        <div class="card">
+                        {% if shift.is_noshow %}
+                            <div class="card-body bg-danger text-white text-center">
+                                You did not show up for this shift.
+                            </div>
+                        {% elif shift.is_cancel %}
+                            <div class="card-body bg-danger text-white text-center">
+                                You have canceled this shift.
+                            </div>
+                        {% elif shift.is_waitlist %}
+                            <div class="card-body bg-warning text-center">
+                                You are waitlisted for this shift.<br>
+                                <a href="{{ url_for('main.cancel_shift', shift_id=shift.id) }}"><button style="width: 80%;" class="btn btn-danger"><b>Cancel Shift</b></button></a>
+                            </div>
+                        {% else %}
+                            <div class="card-body bg-success text-white text-center">
+                                You are confirmed for this shift.<br>
+                                <a href="{{ url_for('main.cancel_shift', shift_id=shift.id) }}"><button style="width: 80%;" class="btn btn-danger"><b>Cancel Shift</b></button></a>
+                            </div>
+                        {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="text-center">Shift Information</h5>
+                        <form action="" method="post" novalidate>
+                        {{ form.hidden_tag() }}
+                        <div class="text-center bg-light text-dark rounded">
+                        <div class="form-group">
+                            {{ form.shift_start.label }}<br/>
+                            {{ form.shift_start(_class="form-control") }}
+                            {% for error in form.shift_start.errors %}
+                                <br/><span style="color:red;">[{{ error }}]</span>
+                            {% endfor %}<br/>
+                             <small class="form-text text-muted">When did you clock in for the day, in HH:MM format? (e.g. 07:00)</small>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            {{ form.lunch_start.label }}<br/>
+                            {{ form.lunch_start(_class="form-control") }}
+                            {% for error in form.lunch_start.errors %}
+                                <br/><span style="color:red;">[{{ error }}]</span>
+                            {% endfor %}<br/>
+                             <small class="form-text text-muted">When did you start your lunch break, in HH:MM format? (e.g. 12:30)</small>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            {{ form.lunch_end.label }}<br/>
+                            {{ form.lunch_end(_class="form-control") }}
+                            {% for error in form.lunch_end.errors %}
+                                <br/><span style="color:red;">[{{ error }}]</span>
+                            {% endfor %}<br/>
+                             <small class="form-text text-muted">When did you finish your lunch break, in HH:MM format? (e.g. 13:00)</small>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            {{ form.shift_end.label }}<br/>
+                            {{ form.shift_end(_class="form-control") }}
+                            {% for error in form.shift_end.errors %}
+                                <br/><span style="color:red;">[{{ error }}]</span>
+                            {% endfor %}<br/>
+                             <small class="form-text text-muted">When did you clock out for the day, in HH:MM format? (e.g. 17:00)</small>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            {{ form.special_units.label }}<br/>
+                            {{ form.special_units(_class="form-control") }}
+                            {% for error in form.special_units.errors %}
+                                <br/><span style="color:red;">[{{ error }}]</span>
+                            {% endfor %}<br/>
+                            <small class="form-text text-muted">If you don't know what this is, leave it as "0".</small><br/>
+                            <small class="form-text text-muted">If you qualify for special compensation, please enter "1". (e.g. You were a lane lead)</small><br/>
+                            <small class="form-text text-muted">If you qualify for per-unit compensation, please enter the number of units you want to be compensated for. (e.g. 110 miles travel reimbursement for out-of-region worker.)</small><br/>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            {{ form.special_explanation.label }}<br/>
+                            {{ form.special_explanation(_class="form-control") }}
+                            {% for error in form.special_explanation.errors %}
+                                <br/><span style="color:red;">[{{ error }}]</span>
+                            {% endfor %}<br/>
+                             <small class="form-text text-muted">If you are applying for special compensation, explain why. (e.g. "I was a lane lead." or "I am an out-of-region worker.")</small>
+                        </div>
+                        </div>
+                        <br>
+                        <div class="text-center">
+                        {{ form.submit() }}
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

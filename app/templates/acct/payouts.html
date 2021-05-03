@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    
+    <table>
+        <tr>
+            <th>User ID</th>
+            <th>Payable ID</th>
+            <th>Amount</th>
+            <th>External Reference</th>
+            <th>Timestamp</th>
+        </tr>
+        {% for x in payouts %}
+            <tr>
+                <td>{{ x.user_id }}</td>
+                <td>{{ x.payable_id }}</td>
+                <td>${{ x.amount }}</td>
+                <td>{{ x.external_reference_id }}</td>
+                <td>{{ x.timestamp }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

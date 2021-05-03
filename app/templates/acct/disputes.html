@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    <br>
+    <table>
+        <tr>
+            <th>Shift Reference</th>
+            <th>Amount</th>
+            <th>Memo</th>
+        </tr>
+        {% for x in disputes %}
+            <tr>
+                <td><a href="{{ url_for('main.view_shift', shift_id=x.shift_id) }}">Shift Reference</a></td>
+                <td>${{ x.amount }}</td>
+                <td>{{ x.memo }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

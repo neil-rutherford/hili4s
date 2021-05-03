@@ -1,0 +1,11 @@
+__pycache__/
+venv/
+logs/
+*.db
+*.pyc
+*.py[cod]
+*$py.class
+*.swp
+*.*~
+.env
+.flaskenv

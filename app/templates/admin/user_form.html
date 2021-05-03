@@ -1,0 +1,97 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1 class="display-4 text-center">{{ title }}</h1>
+    <hr>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <!--- Personal Information --->
+        <div class="text-center bg-light text-dark rounded">
+        <div class="form-group">
+            {{ form.first_name.label }}<br/>
+            {{ form.first_name(_class="form-control") }}
+            {% for error in form.first_name.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">User's first name?</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.last_name.label }}<br/>
+            {{ form.last_name(_class="form-control") }}
+            {% for error in form.last_name.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">User's surname?</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.email.label }}<br/>
+            {{ form.email(_class="form-control") }}
+            {% for error in form.email.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">User's email address?</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.password.label }}<br/>
+            {{ form.password(_class="form-control") }}
+            {% for error in form.password.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">Only do this if you would like to reset the user's password.</small>
+        </div>
+        </div>
+        <br>
+        <!--- Administrative Information --->
+        <div class="text-center bg-light text-dark rounded">
+        <div class="form-group">
+            {{ form.region_id.label }}<br/>
+            {{ form.region_id(_class="form-control") }}
+            {% for error in form.region_id.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">What region is the user in?</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.user_type.label }}<br/>
+            {{ form.user_type(_class="form-control") }}
+            {% for error in form.user_type.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">What type of user is this? This determines permissions and pay.</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.stripe_customer_id.label }}<br/>
+            {{ form.stripe_customer_id(_class="form-control") }}
+            {% for error in form.stripe_customer_id.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">In a future version of this software, this may be used for payouts.</small>
+        </div>
+        <br>
+        <div class="form-group">
+            {{ form.comments.label }}<br/>
+            {{ form.comments(_class="form-control") }}
+            {% for error in form.comments.errors %}
+                <br/><span style="color:red;">[{{ error }}]</span>
+            {% endfor %}<br/>
+            <small class="form-text text-muted">Anything pertinent you'd like to add about the user. (e.g. "Has lane lead experience, likes Montbello.")
+        </div>
+        </div>
+        <br>
+        <!--- Status --->
+        <div class="text-center bg-light text-dark rounded">
+        {{ form.is_drug }} {{ form.is_drug.label }}<br>
+        {{ form.is_background }} {{ form.is_background.label }}<br>
+        {{ form.is_blacklist }} {{ form.is_blacklist.label }}<br>
+        </div>
+        <br>
+        <div class="text-center">
+        {{ form.submit() }}
+        </div>
+    </form>
+{% endblock %}
