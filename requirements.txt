@@ -1,7 +1,7 @@
 flask
 python-dotenv
 flask-wtf
-flask-sqlalchemy
+Flask-SQLAlchemy==2.4.4
 flask-migrate
 flask-login
 flask-moment
@@ -15,3 +15,5 @@ SQLAlchemy
 email_validator
 psycopg2
 gunicorn
+alembic==0.9.6
+Flask-Migrate==2.5.3
